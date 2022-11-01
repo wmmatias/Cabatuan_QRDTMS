@@ -32,9 +32,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </form>
                 </div>
-                <div class="logo_container col-md-7 text-center position-relative">
+                <div class="logo_container col-md-4 offset-md-2 text-center position-relative">
                     <div class="">
-                        <img src="/assets/images/isabela animated.gif" class="img-fluid" alt="">
+                        <img src="/assets/images/logo.png" class="img-fluid" alt="">
                     </div>
                 </div>
             </div>

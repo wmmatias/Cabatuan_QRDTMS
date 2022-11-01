@@ -1,10 +1,12 @@
-            </main>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>            </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div></div>
                             <div class="text-muted">
-                                Copyright &copy; San Manuel | QRDTMS <?php  echo $curr_year = date('Y'); ?>
+                                Copyright &copy; Cabatuan | QRDTMS <?php  echo $curr_year = date('Y'); ?>
                             </div>
                         </div>
                     </div>

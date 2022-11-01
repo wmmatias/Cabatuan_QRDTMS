@@ -58,9 +58,33 @@ $route['signin/validate'] = 'users/process_signin';
 $route['dashboard'] = 'dashboards';
 $route['dashboard/signoff'] = 'dashboards/logoff';
 $route['dashboard/users'] = 'dashboards/users';
+$route['dashboard/vendor'] = 'dashboards/vendor';
+$route['dashboard/item'] = 'dashboards/item';
+$route['dashboard/request'] = 'dashboards/request';
+$route['dashboard/pr_details'] = 'dashboards/pr_details';
+$route['dashboard/order'] = 'dashboards/order';
+$route['dashboard/list_request'] = 'dashboards/list_request';
+$route['dashboard/list_order'] = 'dashboards/list_order';
 
+$route['users/delete/(:any)'] = 'users/delete/$1';
+$route['users/edit/(:any)'] = 'users/edit/$1';
+$route['users/edit/(:any)/validate'] = 'users/process_user_modification';
 
 $route['dashboard/add'] = 'dashboards/addusers';
 $route['dashboard/create'] = 'users/process_registration';
+
+$route['vendors/create'] = 'vendors/process_create';
+$route['vendors/edit/(:any)'] = 'vendors/edit/$1';
+$route['vendors/edit/(:any)/validate'] = 'vendors/validate_update';
+$route['vendors/delete/(:any)'] = 'vendors/delete/$1';
+
+$route['items/create'] = 'items/process_create';
+$route['items/edit/(:any)'] = 'items/edit/$1';
+$route['items/edit/(:any)/validate'] = 'items/validate_update';
+$route['items/delete/(:any)'] = 'items/delete/$1';
+
+$route['requests/items'] = 'requests/process_create';
+$route['requests/view/(:any)'] = 'requests/view/$1';
+
 
 

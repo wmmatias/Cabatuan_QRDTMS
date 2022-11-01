@@ -3,9 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
     
-    /*  DOCU: This function is triggered by default which displays the sign in/dashboard.
-        Owner: 
-    */
     public function index() 
     {   
         $current_user_id = $this->session->userdata('user_id');
@@ -19,11 +16,18 @@ class Users extends CI_Controller {
         }
     }
     
-    /*  DOCU: This function is triggered when the sign in button is clicked. 
-        This validates the required form inputs and if user password matches in the database by given email.
-        If no problem occured, user will be routed to the dashboard.
-        Owner: 
-    */
+    public function edit($id) 
+    {   
+        $this->session->set_userdata(array('edit_id'=> $id));
+        $result = $this->user->get_user_id($id);
+        $list = array('list' => $result);  
+
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/edit_user',$list);
+        $this->load->view('templates/includes/footer');
+    }
+
     public function process_signin() 
     {
         $result = $this->user->validate_signin_form();
@@ -42,7 +46,7 @@ class Users extends CI_Controller {
             {   
                 $is_admin = $this->user->validate_is_admin($user_name);
                 if(!empty($is_admin)){
-                    $this->session->set_userdata(array('user_id'=>$user['id'], 'auth' => true));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'userlevel'=>$user['user_level'], 'auth' => true));
                     redirect("dashboard");
                 }
                 else{
@@ -59,12 +63,6 @@ class Users extends CI_Controller {
 
     }
     
-    /*  DOCU: This function is triggered when the register button is clicked. 
-        This validates the required form inputs then checks if the email is already taken. 
-        If no problem occured, user information will be stored in database 
-        and said user will be routed to the dashboard.
-        Owner: 
-    */
     public function process_registration() 
     {   
         $username = $this->input->post('username');
@@ -77,15 +75,17 @@ class Users extends CI_Controller {
         else
         {
             $form_data = $this->input->post();
-            $this->user->create_user($form_data);
-            
-            redirect("/dashboard/users");
+            if($form_data['userlevel'] === 'Select Level'){
+                $this->session->set_flashdata('input_errors', 'Select User Level');
+                redirect("/dashboard/add");
+            }
+            else{
+                $this->user->create_user($form_data);
+                redirect("/dashboard/users");
+            }
         }
     }
 
-    /*  DOCU: This function loads the details of current user in profile page.
-        Owner: 
-    */
     public function profile() 
     {   
         $user_id = $this->session->user_id;
@@ -95,9 +95,6 @@ class Users extends CI_Controller {
         $this->load->view('users/edit',$details); 
     }
 
-    /*  DOCU: This function validate the user information.
-        Owner: 
-    */
     public function edit_information_process() 
     {   
         $result = $this->user->validate_information();
@@ -113,10 +110,7 @@ class Users extends CI_Controller {
             redirect("users/edit");
         }
     }
-    
-    /*  DOCU: This function validate the user credentials input.
-        Owner: 
-    */
+   
     public function edit_credentials() 
     {   
         $this->output->enable_profiler(TRUE);
@@ -133,6 +127,32 @@ class Users extends CI_Controller {
             $this->session->set_flashdata('successc','your credential successfully update');
             redirect("users/edit");
         }
+    }
+
+    public function delete($id) 
+    {  
+        $this->user->delete_user_id($id);
+        redirect('/dashboards/users');
+    }
+
+    public function process_user_modification() 
+    {   
+        $edit_id = $this->session->edit_id;
+        $user = $this->input->post('username');
+        $result = $this->user->validate_user_details($user, $edit_id);
+        
+        if($result!=null) {
+            $this->session->set_flashdata('input_errors', $result);
+            redirect("users/edit/$edit_id");
+        } 
+        else
+        {
+            $form_data = $this->input->post();
+            $this->user->update_userinformation($form_data);
+            $this->session->set_flashdata('input_errors','The user successfully modified');
+            redirect("users/edit/$edit_id");
+        }
+        
     }
     
 }

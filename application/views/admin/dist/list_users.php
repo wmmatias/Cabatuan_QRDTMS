@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+// var_dump($list)
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -42,12 +43,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>                                        <tr>
                                             <td><?=$list[$i]['first_name'] .' '. $list[$i]['last_name']?></td>
                                             <td><?=$list[$i]['user_name']?></a></td>
-                                            <td><?=$list[$i]['user_level']?></td>
+                                            <td><?=($list[$i]['user_level'] === '0'? 'Admin' : 'User')?></td>
                                             <td><?=$create?></td>
                                             <td><?=$update?></td>
                                             <td>
-                                                <a href="" class="btn btn-primary">Edit</a>
-                                                <a href="" class="btn btn-danger">Delete</a>
+                                                <a href="/users/edit/<?=$list[$i]['id']?>" class="btn btn-primary">Edit</a>
+                                                <a href="/users/delete/<?=$list[$i]['id']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['first_name'] .' '. $list[$i]['last_name']?>?')" class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
 <?php                                   }

@@ -11699,3 +11699,23 @@ body {
   font-size: 0.75rem;
   border-radius: 0.25rem !important;
 }
+
+p .name{
+  color: green;
+}
+.head-stick{
+  position: sticky;
+  top: 0;
+}
+.pick{
+  height: 255px;
+  overflow-y: scroll;
+}
+
+#request{
+  height: 200px;
+  overflow-y: scroll;
+}
+#edit_qty{
+  width: 50px;
+}
