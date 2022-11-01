@@ -79,5 +79,4 @@ $date = date('m-d-Y', strtotime($date));
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>       

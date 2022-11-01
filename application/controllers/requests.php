@@ -42,7 +42,7 @@ class Requests extends CI_Controller {
         $form_data = $this->input->post();
         $res = $this->request->generate_PR($form_data);
         if($res === 'success'){
-            $this->session->set_flashdata('input_errors', 'Purchase Request created successfully');
+            $this->session->set_flashdata('input_errors', 'Purchase Request created successfully <a href="/dashboard/list_request">view here</a>');
             redirect('dashboard/pr_details');
         }
         else{
@@ -87,7 +87,7 @@ class Requests extends CI_Controller {
             $pr_no = $this->request->get_last_pr();
             $vendor = $this->request->get_all_vendor();
             $items = $this->request->get_items_pr($pr_no);
-            $error =  $this->session->set_flashdata('input_errors', 'The Vendor field is required please select vendor.');
+            $error =  $this->session->set_flashdata('input_errors', 'The Vendor field is required please select vendor');
             $list = array('pr_no' => $pr_no, 'date' => $date, 'vendor' => $vendor, 'items' => $items);
             $this->load->view('templates/includes/header');
             $this->load->view('templates/includes/sidebar');
@@ -108,7 +108,6 @@ class Requests extends CI_Controller {
         $data = $this->request->get_pr($id);
         $sum = $this->request->sum_unitprice($id);
         $list = array('data'=>$data, 'sum' => $sum);
-        // $list = array('data'=>$data);
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
         $this->load->view('admin/dist/view_request', $list);

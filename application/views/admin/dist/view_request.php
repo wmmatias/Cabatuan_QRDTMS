@@ -9,7 +9,7 @@ $create = date('m-d-Y', strtotime($data[0]['created_at']));
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"> <a href="/">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="/dashboard/list_request">Purchase Request</a></li>
-                            <li class="breadcrumb-item active">Purchase Request</li>
+                            <li class="breadcrumb-item active">View</li>
                         </ol><div class="movement_form">
                         </div>
                         <div class="row mb-2">

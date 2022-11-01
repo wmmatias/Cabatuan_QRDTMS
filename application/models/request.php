@@ -30,7 +30,8 @@ class Request extends CI_Model {
         ON vendors.id = requests.vendor_id
         LEFT JOIN qrdtms.users
         ON users.id = requests.created_by
-        WHERE created_by = ?",
+        WHERE created_by = ?
+        ORDER BY requests.pr_no DESC",
         array(
             $this->security->xss_clean($id),
         ))->result_array();
@@ -193,6 +194,8 @@ class Request extends CI_Model {
 
         $this->delete($form_data['user_id']);
 
+        $kill = array('pr_no', 'vendor', 'description', 'vendor_code');
+        $this->session->unset_userdata($kill);
         return 'success';
        
     }
