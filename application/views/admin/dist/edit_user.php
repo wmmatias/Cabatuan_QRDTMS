@@ -9,9 +9,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <li class="breadcrumb-item"> <a href="/dashboard/users">Users</a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>
-                        <div class="card mb-4">
+<?php                   if($this->session->flashdata('success')){
+?>                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <?=$this->session->flashdata('success');?> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+<?php                   }
+?>                        <div class="card mb-4">
                             <div class="card-body">
-                                <?=$this->session->flashdata('input_errors');?> 
+                                <?=$this->session->flashdata('input_errors');?>
                                 <form action="/users/edit/(:any)/validate" method="POST">
                                     <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                                     <div class="mb-2 row">
@@ -45,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <option>Select Level</option>
                                                 <option value="0" <?=($list['user_level'] === '0' ? 'selected' : '')?>>Admin</option>
                                                 <option value="1" <?=($list['user_level'] === '1' ? 'selected' : '')?>>User</option>
+                                                <option value="2" <?=($list['user_level'] === '2' ? 'selected' : '')?>>Approver</option>
                                             </select>
                                         </div>
                                     </div>

@@ -11719,3 +11719,22 @@ p .name{
 #edit_qty{
   width: 50px;
 }
+
+@media print {
+  *{
+    margin: 0;
+    padding: 0;
+  }
+
+  p{
+    font-weight: normal;
+  }
+
+  #print_hide, #layoutSidenav_nav, nav a{
+    display: none;
+  }
+
+  p{
+    font-size: 12px;
+  }
+}

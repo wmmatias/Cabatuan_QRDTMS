@@ -5,11 +5,11 @@ class Item extends CI_Model {
 
     public function get_allitem()
     { 
-        $query = "SELECT  items.id, items.created_by, items.item_code, items.name, items.uom, items.unit_price, vendors.vendor_code, users.first_name, users.last_name, items.created_at
-        FROM qrdtms.items
-        LEFT JOIN qrdtms.users
+        $query = "SELECT  items.id, items.pr_no, vendors.name, items.description, items.uom, items.unit_cost, items.vendor_code, users.first_name, users.last_name, items.created_at
+        FROM cabatuan_qrdtms.items
+        LEFT JOIN cabatuan_qrdtms.users
         ON users.id = items.created_by
-        LEFT JOIN qrdtms.vendors
+        LEFT JOIN cabatuan_qrdtms.vendors
         ON vendors.vendor_code = items.vendor_code
         ORDER BY items.created_at DESC";
         return $this->db->query($query)->result_array();
@@ -71,7 +71,7 @@ class Item extends CI_Model {
     }
 
     public function validate_update(){
-        $this->form_validation->set_error_delimiters('<div>','</div>');
+        $this->form_validation->set_error_delimiters('<div class="text-danger">','</div>');
         $this->form_validation->set_rules('vendorcode', 'Vendor Code', 'required|alpha_numeric');
         $this->form_validation->set_rules('itemname', 'Item Name', 'required'); 
         $this->form_validation->set_rules('uom', 'Unit of Measure', 'required');
@@ -86,7 +86,7 @@ class Item extends CI_Model {
     }
 
     public function update_item($form_data){
-        return $this->db->query("UPDATE items SET name = ?, uom = ?, unit_price = ?, vendor_code = ?, updated_at = ? WHERE id = ?", 
+        return $this->db->query("UPDATE items SET description = ?, uom = ?, unit_cost = ?, vendor_code = ?, updated_at = ? WHERE id = ?", 
         array(
             $this->security->xss_clean($form_data['itemname']), 
             $this->security->xss_clean($form_data['uom']),
@@ -101,28 +101,28 @@ class Item extends CI_Model {
         return $this->db->query($query, $this->security->xss_clean($code))->result_array();
     }
     
-    public function delete_item_id($id) {
-        return $this->db->query("DELETE FROM items WHERE id = ?", 
-        array(
-            $this->security->xss_clean($id)));
-    }
+    // public function delete_item_id($id) {
+    //     return $this->db->query("DELETE FROM items WHERE id = ?", 
+    //     array(
+    //         $this->security->xss_clean($id)));
+    // }
 
-    public function get_last_code(){
-        $query = "SELECT item_code FROM items  ORDER BY item_code DESC LIMIT 1";
-        $res =  $this->db->query($query);
-        $code = '';
-        foreach($res->result_array() as $row)
-        {
-            $code = $row['item_code'];
-        }
+    // public function get_last_code(){
+    //     $query = "SELECT item_code FROM items  ORDER BY id DESC LIMIT 1";
+    //     $res =  $this->db->query($query);
+    //     $code = '';
+    //     foreach($res->result_array() as $row)
+    //     {
+    //         $code = $row['item_code'];
+    //     }
 
-        if($res !== null){
-            $initial = 1;
-            $vcode = $vcode = 'I' . str_pad($initial + substr($code, 3), 6, '0', STR_PAD_LEFT);;
-            return $vcode;
-        }else{
-            return 'I000001';     
-        }
-    }
+    //     if($res !== null){
+    //         $initial = 1;
+    //         $vcode = $vcode = 'I' . str_pad($initial + substr($code, 3), 6, '0', STR_PAD_LEFT);;
+    //         return $vcode;
+    //     }else{
+    //         return 'I000001';     
+    //     }
+    // }
 
 }

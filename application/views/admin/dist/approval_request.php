@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$approver = $this->session->userdata('approver');
+// var_dump($_SESSION)
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Purchase Request List</h1>
+                        <h1 class="mt-4">Request for Approval</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"> <a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Purchase Request List</li>
+                            <li class="breadcrumb-item active">Request for Approval</li>
                         </ol>
 <?php                   if($this->session->flashdata('warning')){
 ?>                        <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -39,7 +39,7 @@ $approver = $this->session->userdata('approver');
                                             <td><?=$data['pr_no']?></td>
                                             <td><?=$data['description']?></td>
                                             <td>
-                                                <?=($data['status'] === '0'? 'Pending' : ($data['status'] === '2'? 'Disapprove': ''))?>
+                                                <?=($data['status'] === '0'? 'Pending' : '')?>
 <?php                                           if($data['approver_1'] === '0'){
 ?>                                                  <span class="badge bg-info text-dark">MBO</span>
 <?php                                           }
@@ -60,13 +60,9 @@ $approver = $this->session->userdata('approver');
                                             <td><?=$create?></td>
                                             <td>
                                                 <a href="/requests/view/<?=$data['pr_no']?>" class="btn btn-success">View</a>
-<?php                                           if($approver){
-                                                }
-                                                else{
-                                                    if($data['approver_4'] != '0'){
+<?php                                           if($data['approver_4'] != '0'){
 ?>                                                  <a href="/orders/view/<?=$data['pr_no']?>" class="btn btn-primary">Create PO</a>
-<?php                                               }
-                                                }
+<?php                                           }
 ?>                                            </td>
                                         </tr>
 <?php                                   }

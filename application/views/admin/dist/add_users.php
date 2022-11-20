@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="card mb-4">
                             <div class="card-body">
                                 <?=$this->session->flashdata('input_errors');?> 
+                                <?=$this->session->flashdata('userlevel');?> 
                                 <form action="/dashboard/create" method="POST">
                                     <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                                     <div class="mb-2 row">
@@ -42,9 +43,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <label for="userlevel" class="col-sm-2 col-form-label">User Level:</label>
                                         <div class="col-sm-4">
                                             <select name="userlevel" class="form-select">
-                                                <option>Select Level</option>
+                                                <option value="empty">Select Level</option>
                                                 <option value="0">Admin</option>
                                                 <option value="1">User</option>
+                                                <option value="2">Approver</option>
                                             </select>
                                         </div>
                                     </div>

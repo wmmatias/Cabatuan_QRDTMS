@@ -15,67 +15,44 @@ $date = date('m-d-Y', strtotime($date));
                             <div class="col-md">
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <form action="/requests/items" method="POST">
+                                        <form action="/requests/items/<?=$details['pr_no']?>" method="POST">
+                                            <div class="mb-2 row border bg-dark bg-gradient">
+                                                <div class="col-md-2 float-end">
+                                                    <button type="submit" class="btn text-white"><i class="fas fa-save"></i></button>
+                                                    <a href="/requests/cancel_requests/<?=$pr_no?>" class="btn text-white"><i class="fas fa-times"></i></a>
+                                                </div>
+                                            </div>
                                             <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                                             <div class="mb-2 row">
                                                 <label for="pr_no" class="col-sm-2 col-form-label">PR No.:</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" name="pr_no" class="form-control" value="<?=$pr_no?>" readonly>
+                                                    <input type="text" name="pr_no" class="form-control" value="<?=$details['pr_no']?>" readonly>
+                                                    <?php echo form_error('pr_no') ?>
                                                 </div>
                                                 <div class="col-sm-3 offset-sm-4">
                                                     <input type="text" name="date" class="form-control" value="<?=$date?>" readonly>
+                                                    <?php echo form_error('date') ?>
                                                 </div>
                                             </div>
                                             <div class="mb-2 row">
-                                                <label for="vendor" class="col-sm-2 col-form-label">Vendor:</label>
+                                                <label for="department" class="col-sm-2 col-form-label">Department:</label>
                                                 <div class="col-sm-3">
-                                                    <select name="vendor" id="vendor" class="form-select" onchange="getvalue()">
-                                                        <option>Select Vendor</option>
-<?php                                                   foreach($vendor as $data){
-?>                                                        <option value="<?= $data['id']?>" ><?=$data['name']?></option>
-<?php                                                   }
-?>                                                    </select>
-                                                <div id="test"></div>
+                                                    <input type="text" name="department" class="form-control">
+                                                    <?php echo form_error('department') ?>
                                                 </div>
                                             </div>
                                             <div class="mb-2 row">
                                                 <label for="description" class="col-sm-2 col-form-label">Description:</label>
                                                 <div class="col">
                                                     <input type="text" name="description" class="form-control">
-                                                </div>
-                                            </div>
-                                            <?=$this->session->flashdata('input_errors');?> 
-                                            <div class="card mt-2">
-                                                <div class="card-header">
-                                                    <p class="d-inline-block"><i class="fas fa-table"></i> Items</p>
-                                                    <input type="submit" class="float-end btn btn-primary" value="Add items">
-                                                </div>
-                                                <div class="card-body">
-                                                    <table class="table table-bordered table-striped table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Vendor Code</th>
-                                                                <th>Item Description</th>
-                                                                <th>Qty</th>
-                                                                <th>Unit of Measure</th>
-                                                                <th>Unit Price</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-<?php                                                       foreach($items as $item){
-?>                                                            <tr>
-                                                                <td><?=$item['vendor_code']?></td>
-                                                                <td><?=$item['name']?></a></td>
-                                                                <td><?=$item['qty']?></td>
-                                                                <td><?=$item['uom']?></td>
-                                                                <td><?=$item['unit_price']?></td>
-                                                            </tr>
-                    <?php                                   }
-                    ?>                                    </tbody>
-                                                    </table>
+                                                    <?php echo form_error('description') ?>
                                                 </div>
                                             </div>
                                         </form>
+                                        <p><strong>Note:</strong>Please do not forget to save your document by clicking the save button <i class="fas fa-save"></i> and don't forget to cancel <i class="fas fa-times"></i> the document if you don't want to continue processing it to reserve the document number and to delete all added items on it.</p>
+                                            <div id="details">
+
+                                            </div>
                                     </div>
                                 </div>
                             </div>

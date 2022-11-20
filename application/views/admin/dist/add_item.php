@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <li class="breadcrumb-item"> <a href="/">Dashboard</a></li>
                             <li class="breadcrumb-item active">Item</li>
                         </ol>
-                        <div class="movement_form">
+                        <!-- <div class="movement_form">
                             <p>Add new item</p>
                             <?=$this->session->flashdata('input_errors');?> 
                             <form action="/items/create" method="post">
@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
 
                         <div class="card mb-4">
                             <div class="card-header">
@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>Item Code</th>
+                                            <th>Use In</th>
                                             <th>Item Name</th>
                                             <th>Unit of Measure</th>
                                             <th>Unit Cost</th>
@@ -66,16 +66,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php                                   for($i=0; $i<count($list); $i++){
                                             $date = date('m-d-Y', strtotime($list[$i]['created_at']));
 ?>                                        <tr>
-                                            <td><?=$list[$i]['item_code']?></td>
-                                            <td><?=$list[$i]['name']?></a></td>
+                                            <td><?=$list[$i]['pr_no']?></td>
+                                            <td><?=$list[$i]['description']?></a></td>
                                             <td><?=$list[$i]['uom']?></td>
-                                            <td><?=$list[$i]['unit_price']?></td>
+                                            <td><?=$list[$i]['unit_cost']?></td>
                                             <td><?=$list[$i]['vendor_code']?></td>
                                             <td><?=$list[$i]['first_name'].' '.$list[$i]['last_name']?></td>
                                             <td><?=$date?></td>
                                             <td>
                                                 <a href="/items/edit/<?=$list[$i]['id']?>" class="btn btn-primary">Edit</a>
-                                                <a href="/items/delete/<?=$list[$i]['id']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['name']?>?')" class="btn btn-danger">Delete</a>
+                                                <!-- <a href="/items/delete/<?=$list[$i]['id']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['description']?>?')" class="btn btn-danger">Delete</a> -->
                                             </td>
                                         </tr>
 <?php                                   }

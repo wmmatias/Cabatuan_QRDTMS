@@ -1,29 +1,30 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$approver = $this->session->userdata('approver');
+// var_dump($_SESSION)
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Purchase Request List</h1>
+                        <h1 class="mt-4">Order for Approval</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"> <a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Purchase Request List</li>
+                            <li class="breadcrumb-item active">Order for Approval</li>
                         </ol>
-<?php                   if($this->session->flashdata('warning')){
+<?php                   if($this->session->flashdata('success')){
 ?>                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <?=$this->session->flashdata('warning');?> 
+                            <?=$this->session->flashdata('success');?> 
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 <?php                   }
 ?>                        <div class="card mb-4">
                             <div class="card-header">
-                                <p class="d-inline-block"><i class="fas fa-table"></i> List of purchase request</p>
+                                <p class="d-inline-block"><i class="fas fa-table"></i> List of purchase order</p>
                                 <a href="/dashboard/pr_details" class="float-end btn btn-primary"><i class="fas fa-plus"></i> Add PR</a>
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
+                                            <th>PO Number</th>
                                             <th>PR Number</th>
                                             <th>Description</th>
                                             <th>Status</th>
@@ -36,21 +37,12 @@ $approver = $this->session->userdata('approver');
 <?php                                   foreach($list as $data){
                                             $create = date('m-d-Y', strtotime($data['created_at']));
 ?>                                        <tr>
+                                            <td><?=$data['order_no']?></td>
                                             <td><?=$data['pr_no']?></td>
                                             <td><?=$data['description']?></td>
                                             <td>
-                                                <?=($data['status'] === '0'? 'Pending' : ($data['status'] === '2'? 'Disapprove': ''))?>
 <?php                                           if($data['approver_1'] === '0'){
-?>                                                  <span class="badge bg-info text-dark">MBO</span>
-<?php                                           }
-                                                elseif($data['approver_2'] === '0'){
-?>                                                  <span class="badge bg-info text-dark">MT</span>
-<?php                                           }
-                                                elseif($data['approver_3'] === '0'){
-?>                                                  <span class="badge bg-info text-dark">MA</span>
-<?php                                           }
-                                                elseif($data['approver_4'] === '0'){
-?>                                                  <span class="badge bg-info text-dark">MM</span>
+?>                                                  Pending <span class="badge bg-info text-dark">MM</span>
 <?php                                           }
                                                 else{
 ?>                                                  <span class="badge bg-success">APPROVED</span>
@@ -59,15 +51,8 @@ $approver = $this->session->userdata('approver');
                                             <td><?=$data['first_name'].' '.$data['last_name']?></td>
                                             <td><?=$create?></td>
                                             <td>
-                                                <a href="/requests/view/<?=$data['pr_no']?>" class="btn btn-success">View</a>
-<?php                                           if($approver){
-                                                }
-                                                else{
-                                                    if($data['approver_4'] != '0'){
-?>                                                  <a href="/orders/view/<?=$data['pr_no']?>" class="btn btn-primary">Create PO</a>
-<?php                                               }
-                                                }
-?>                                            </td>
+                                                <a href="/orders/view_docu/<?=$data['order_no']?>" class="btn btn-success">View</a>
+                                            </td>
                                         </tr>
 <?php                                   }
 ?>                                    </tbody>

@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$admin = $this->session->userdata('auth');
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -8,9 +9,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <li class="breadcrumb-item"> <a href="/">Dashboard</a></li>
                             <li class="breadcrumb-item active">Vendor</li>
                         </ol>
-                        <div class="movement_form">
+<?php                   if($this->session->flashdata('success')){
+?>                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <?=$this->session->flashdata('success');?> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+<?php                   }
+?>                        <div class="movement_form">
                             <p>Add new vendor</p>
-                            <?=$this->session->flashdata('input_errors');?> 
                             <form action="/vendors/create" method="post">
                                 <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                                 <div class="row mb-2">
@@ -18,11 +24,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="col-md-4 input-group input-group-outline my-1">
                                             <input type="text" name="name" class="form-control" placeholder="Vendor Name">
                                         </div>
+                                            <?php echo form_error('name') ?>
                                     </div>
                                     <div class="col-md">
                                         <div class="col-md-4 input-group input-group-outline my-1">
                                             <input type="text" name="address" class="form-control" placeholder="Vendor Address">
                                         </div>
+                                            <?php echo form_error('address') ?>
                                     </div>
                                     <div class="col-md">
                                         <div class="col-md-4 input-group input-group-outline my-1">
@@ -53,16 +61,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <tbody>
 <?php                                   for($i=0; $i<count($list); $i++){
                                             $date = date('m-d-Y', strtotime($list[$i]['created_at']));
-?>                                        <tr>
+?>                                        <tr class="<?=($list[$i]['status'] != '0' ? 'bg-info':'')?>">
                                             <td><?=$list[$i]['vendor_code']?></td>
                                             <td><?=$list[$i]['name']?></a></td>
                                             <td><?=$list[$i]['address']?></td>
                                             <td><?=$list[$i]['first_name'].' '.$list[$i]['last_name']?></td>
                                             <td><?=$date?></td>
                                             <td>
-                                                <a href="/vendors/edit/<?=$list[$i]['id']?>" class="btn btn-primary">Edit</a>
-                                                <a href="/vendors/delete/<?=$list[$i]['id']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['name']?>?')" class="btn btn-danger">Delete</a>
-                                            </td>
+                                                <a href="/vendors/edit/<?=$list[$i]['vendor_code']?>" class="btn btn-primary">Edit</a>
+<?php                                       if($admin){
+                                                if($list[$i]['status'] === '0'){
+?>                                                    <a href="/vendors/block/<?=$list[$i]['vendor_code']?>" class="btn btn-danger">Block</a>
+<?php                                           }
+                                                else{
+?>                                                    <a href="/vendors/unblock/<?=$list[$i]['vendor_code']?>" class="btn btn-success">Unblock</a>
+<?php                                           }
+                                            }
+?>                                            </td>
                                         </tr>
 <?php                                   }
 ?>                                    </tbody>

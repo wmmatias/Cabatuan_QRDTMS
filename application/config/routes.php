@@ -65,9 +65,16 @@ $route['dashboard/pr_details'] = 'dashboards/pr_details';
 $route['dashboard/order'] = 'dashboards/order';
 $route['dashboard/list_request'] = 'dashboards/list_request';
 $route['dashboard/list_order'] = 'dashboards/list_order';
+$route['dashboard/approval_request'] = 'dashboards/approval_request';
+$route['dashboard/approval_order'] = 'dashboards/approval_order';
+$route['dashboard/logs'] = 'dashboards/list_logs';
+$route['dashboard/report'] = 'dashboards/report';
 
-$route['users/delete/(:any)'] = 'users/delete/$1';
+$route['users/block/(:any)'] = 'users/block/$1';
+$route['users/unblock/(:any)'] = 'users/unblock/$1';
 $route['users/edit/(:any)'] = 'users/edit/$1';
+$route['users/profile/(:any)'] = 'users/profile/$1';
+$route['users/credentials'] = 'users/edit_credentials';
 $route['users/edit/(:any)/validate'] = 'users/process_user_modification';
 
 $route['dashboard/add'] = 'dashboards/addusers';
@@ -76,15 +83,23 @@ $route['dashboard/create'] = 'users/process_registration';
 $route['vendors/create'] = 'vendors/process_create';
 $route['vendors/edit/(:any)'] = 'vendors/edit/$1';
 $route['vendors/edit/(:any)/validate'] = 'vendors/validate_update';
-$route['vendors/delete/(:any)'] = 'vendors/delete/$1';
+$route['vendors/block/(:any)'] = 'vendors/block/$1';
+$route['vendors/unblock/(:any)'] = 'vendors/unblock/$1';
 
 $route['items/create'] = 'items/process_create';
 $route['items/edit/(:any)'] = 'items/edit/$1';
 $route['items/edit/(:any)/validate'] = 'items/validate_update';
 $route['items/delete/(:any)'] = 'items/delete/$1';
 
-$route['requests/items'] = 'requests/process_create';
+$route['requests/items/(:any)'] = 'requests/process_create/$1';
 $route['requests/view/(:any)'] = 'requests/view/$1';
+$route['requests/cancel_requests/(:any)'] = 'requests/cancel_requests/$1';
+$route['requests/qrcode/(:any)'] = 'requests/qrcode/$1';
+$route['requests/approved/(:any)'] = 'requests/approved/$1';
+$route['requests/disapproved/(:any)'] = 'requests/disapproved/$1';
+$route['requests/approved_po/(:any)'] = 'requests/approved_po/$1';
+$route['requests/disapproved_po/(:any)'] = 'requests/disapproved_po/$1';
 
-
-
+$route['orders/view/(:any)'] = 'orders/view/$1';
+$route['orders/view_docu/(:any)'] = 'orders/view_docu/$1';  
+$route['orders/create_po'] = 'orders/create_po';

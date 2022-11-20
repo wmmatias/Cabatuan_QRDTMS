@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </div>
                                     <div class="col-md">
                                         <div class="col-md-4 input-group input-group-outline my-1">
-                                            <input type="hidden" name="id" value="<?=$details['id']?>">
+                                            <input type="hidden" name="id" value="<?=$details['vendor_code']?>">
                                             <a href="/dashboard/vendor" class="btn btn-danger me-2 rounded"><strong>X</strong></a>
                                             <button type="submit" class="btn btn-success rounded"><i class="fas fa-save"></i></button>
                                         </div>
@@ -62,8 +62,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$list[$i]['first_name'].' '.$list[$i]['last_name']?></td>
                                             <td><?=$date?></td>
                                             <td>
-                                                <a href="/vendors/edit/<?=$list[$i]['id']?>" class="btn btn-primary">Edit</a>
-                                                <a href="/vendors/delete/<?=$list[$i]['id']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['name']?>?')" class="btn btn-danger">Delete</a>
+                                                <a href="/vendors/edit/<?=$list[$i]['vendor_code']?>" class="btn btn-primary">Edit</a>
+                                                <a href="/vendors/delete/<?=$list[$i]['vendor_code']?>" onclick="return confirm('Are you sure you want to DELETE <?=$list[$i]['name']?>?')" class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
 <?php                                   }

@@ -9,9 +9,18 @@ class Dashboards extends CI_Controller {
             redirect("users");
         } 
         else {
+            $total = $this->dashboard->total();
+            $pending = $this->dashboard->pending();
+            $approved = $this->dashboard->approved();
+            $cancelled = $this->dashboard->cancelled();
+            $po_total = $this->dashboard->po_total();
+            $po_pending = $this->dashboard->po_pending();
+            $po_approved = $this->dashboard->po_approved();
+            $po_cancelled = $this->dashboard->po_cancelled();
+            $data = array('total'=>$total, 'pending'=>$pending, 'approved'=>$approved, 'cancel'=>$cancelled, 'po_total'=>$po_total, 'po_pending'=>$po_pending, 'po_approved'=>$po_approved, 'po_cancel'=>$po_cancelled);
             $this->load->view('templates/includes/header');
             $this->load->view('templates/includes/sidebar');
-            $this->load->view('admin/dist/index');
+            $this->load->view('admin/dist/index', $data);
             $this->load->view('templates/includes/footer');
         }
     }
@@ -56,10 +65,6 @@ class Dashboards extends CI_Controller {
     
     public function request() 
     {
-        // $this->load->view('templates/includes/header');
-        // $this->load->view('templates/includes/sidebar');
-        // $this->load->view('admin/dist/add_request');
-        // $this->load->view('templates/includes/footer');
         redirect('requests');
     }
 
@@ -67,9 +72,12 @@ class Dashboards extends CI_Controller {
     {
         $date = date("Y-m-d, H:i:s");
         $pr_no = $this->request->get_last_pr();
-        $vendor = $this->request->get_all_vendor();
-        $items = $this->request->get_items_pr($pr_no);
-        $list = array('pr_no' => $pr_no, 'date' => $date, 'vendor' => $vendor, 'items' => $items);
+        $create = $this->request->save_pr($pr_no);
+        $details = $this->request->get_save_pr($create);
+        $this->session->set_userdata('last_save_pr', ''.$create.'');
+        $this->session->set_userdata('activity', 'Attepmt to create PR '.$pr_no.'');
+        $this->activity->log($this->session->userdata('user_id'));
+        $list = array('pr_no' => $create, 'date' => $date, 'details'=>$details);
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
         $this->load->view('admin/dist/add_pr', $list);
@@ -86,7 +94,7 @@ class Dashboards extends CI_Controller {
 
     public function list_request() 
     {
-        $result = $this->request->fetch_all_generated_request($this->session->userdata('user_id'));
+        $result = $this->request->fetch_all_generated_request();
         $list = array('list' => $result);
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
@@ -96,15 +104,60 @@ class Dashboards extends CI_Controller {
     
     public function list_order() 
     {
+        $result = $this->request->fetch_all_generated_order();
+        $list = array('list' => $result);
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
-        $this->load->view('admin/dist/add_order');
+        $this->load->view('admin/dist/list_order',$list);
+        $this->load->view('templates/includes/footer');
+    }
+
+    public function list_logs() 
+    {
+        $result = $this->activity->fetch_all_logs();
+        $list = array('list' => $result);
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/list_logs',$list);
+        $this->load->view('templates/includes/footer');
+    }
+
+    public function approval_order() 
+    {   
+        $approver = $this->session->userdata('approver');
+        $result = $this->request->fetch_all_order_approval($approver);
+        $list = array('list' => $result);
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/approval_order',$list);
+        $this->load->view('templates/includes/footer');
+    }
+
+    
+    public function report() 
+    {   
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/view_report');
+        $this->load->view('templates/includes/footer');
+    }
+
+    public function approval_request() 
+    {
+        $approver = $this->session->userdata('approver');
+        $result = $this->request->fetch_all_request_approval($approver);
+        $list = array('list' => $result);
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/approval_request',$list);
         $this->load->view('templates/includes/footer');
     }
 
     public function logoff() 
     {
         $this->session->sess_destroy();
+        $this->session->set_userdata('activity', ''.$this->session->userdata('firstname').' successfully logged out');
+        $this->activity->log($this->session->userdata('user_id'));
         redirect("users");   
     }
 

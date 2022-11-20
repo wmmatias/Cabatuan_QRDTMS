@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-    <footer class="py-4 bg-light mt-auto fixed-bottom">
+    <footer id="print_hide" class="py-4 bg-light mt-auto fixed-bottom">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
-                <div class="text-muted">Copyright &copy; QRDTMS <?php echo date("Y"); ?></div>
+                <div id="print_hide" class="text-muted">Copyright &copy; QRDTMS <?php echo date("Y"); ?></div>
                 <div>
                     <a href="#">Privacy Policy</a>
                     &middot;

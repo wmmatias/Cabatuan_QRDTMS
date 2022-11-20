@@ -1,11 +1,24 @@
 $(document).ready(function(){ 	
-    var delay = (function(){
-    var timer = 0;
-    return function(callback, ms){
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-    };
-    })();
+
+    $.get('/requests/add_item', function(res) {
+        $('#details').html(res);
+    });
+
+    $(document).on('submit', '#initial_item', function(){
+        var form = $(this);
+        $.post(form.attr('action'), form.serialize(), function(res){
+            $('#details').html(res);
+        });
+        return false;
+    });
+
+    $(document).on('submit', '#delete_item', function(){
+        var form = $(this);
+        $.post(form.attr('action'), form.serialize(), function(res){
+            $('#details').html(res);
+        });
+        return false;
+    });
     
     $('#vendorcode').keyup(function() {
 

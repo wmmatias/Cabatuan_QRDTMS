@@ -38,6 +38,42 @@ class Requests extends CI_Controller {
 	    $this->load->view("partials/request", $result);
     }
 
+    public function add_item(){
+        $pr_no = $this->session->userdata('last_save_pr');
+        $item = $this->request->fetch_request_item($pr_no);
+        $data = array('items'=>$item, 'pr_no'=>$pr_no);
+	    $this->load->view("partials/pr_items", $data);
+    }
+
+    public function cancel_requests($id){
+        $this->session->set_flashdata('warning', '<strong>Warning</strong>Purchase Request cancelled');
+        $this->session->set_userdata('activity', 'PR '.$id.' cancel creation');
+        $this->activity->log($this->session->userdata('user_id'));
+        $this->request->cancel_request($id);
+        redirect('dashboards/list_request');
+    }
+
+    public function initial_item_validation(){
+        $form_data = $this->input->post();
+        $result = $this->request->item_validation();
+        if($result!='success')
+        {
+            $this->session->set_flashdata('initial', $result);
+            $this->add_item();
+        }
+        else
+        {   
+            $this->request->add_initial_item($form_data);
+            $this->add_item();
+        }
+    }
+
+    public function initial_item_delete(){
+        $form_data = $this->input->post();
+        $this->request->delete_initial($form_data);
+        $this->add_item();
+    }
+
     public function generate_PR(){
         $form_data = $this->input->post();
         $res = $this->request->generate_PR($form_data);
@@ -64,35 +100,28 @@ class Requests extends CI_Controller {
         }
     }
 
-    public function process_create() 
+    public function process_create($pr_no) 
     {   
         $form_data = $this->input->post();
-
-        if($form_data['vendor'] !== 'Select Vendor'){
-            $result = $this->request->create_validation($form_data);
-            if($result!='success')
-            {
-                $this->session->set_flashdata('input_errors', $result);
-                redirect("/dashboard/pr_details");
-            }
-            else
-            {   
-                $result = $this->request->get_vendorby_id($form_data);
-                $this->request->save_pr($form_data, $result);
-                redirect('requests');
-            }
-        }
-        else{
+        $result = $this->request->create_validation($form_data);
+        if($result!='success')
+        {
+            $this->session->set_flashdata('errors', $result);
             $date = date("Y-m-d, H:i:s");
-            $pr_no = $this->request->get_last_pr();
-            $vendor = $this->request->get_all_vendor();
-            $items = $this->request->get_items_pr($pr_no);
-            $error =  $this->session->set_flashdata('input_errors', 'The Vendor field is required please select vendor');
-            $list = array('pr_no' => $pr_no, 'date' => $date, 'vendor' => $vendor, 'items' => $items);
+            $details = $this->request->get_save_pr($pr_no);
+            $list = array('pr_no' => $pr_no, 'date' => $date, 'details'=>$details);
             $this->load->view('templates/includes/header');
             $this->load->view('templates/includes/sidebar');
             $this->load->view('admin/dist/add_pr', $list);
             $this->load->view('templates/includes/footer');
+        }
+        else
+        {   
+            $this->session->set_flashdata('warning', '<strong>Successfully</strong> Created');
+            $this->request->update_pr($form_data);
+            $this->session->set_userdata('activity', 'PR '.$pr_no.' created successfully');
+            $this->activity->log($this->session->userdata('user_id'));
+            redirect('dashboards/list_request');
         }
     }
 
@@ -112,5 +141,49 @@ class Requests extends CI_Controller {
         $this->load->view('templates/includes/sidebar');
         $this->load->view('admin/dist/view_request', $list);
         $this->load->view('templates/includes/footer');
+    }
+
+    public function qrcode($id){
+        $pr_no = $id;
+        qrcode::png(
+            $pr_no,
+            $outfile = false,
+            $level = QR_ECLEVEL_H,
+            $size = 4,
+            $margin = 1
+        );
+    }
+
+    public function approved($id){
+        $this->session->set_flashdata('warning', '<strong>Successfully!</strong> The '.$id.' has been approved!');
+        $this->request->update_approve($id);
+        $this->session->set_userdata('activity', 'PR '.$id.' approved successfully');
+        $this->activity->log($this->session->userdata('user_id'));
+        redirect('dashboard/list_request');
+    }
+    
+    public function approved_po($id){
+        $this->session->set_flashdata('warning', '<strong>Successfully!</strong> The '.$id.' has been approved!');
+        $this->request->update_approve_po($id);
+        $this->session->set_userdata('activity', 'PO '.$id.' approved successfully');
+        $this->activity->log($this->session->userdata('user_id'));
+        redirect('dashboard/list_order');
+    }
+
+    
+    public function disapproved($id){
+        $this->session->set_flashdata('warning', '<strong>Successfully!</strong> The '.$id.' has been disapproved!');
+        $this->request->update_disapprove($id);
+        $this->session->set_userdata('activity', 'PR '.$id.' disapproved successfully');
+        $this->activity->log($this->session->userdata('user_id'));
+        redirect('dashboard/list_request');
+    }
+    
+    public function disapproved_po($id){
+        $this->session->set_flashdata('warning', '<strong>Successfully!</strong> The '.$id.' has been disapproved!');
+        $this->request->update_disapprove_po($id);
+        $this->session->set_userdata('activity', 'PO '.$id.' disapproved successfully');
+        $this->activity->log($this->session->userdata('user_id'));
+        redirect('dashboard/list_order');
     }
 }
