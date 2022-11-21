@@ -1,4 +1,16 @@
 $(document).ready(function(){ 	
+    $('#approver_level').hide();
+
+    $(document).on('change', '#user_level', function(){
+        console.log(this.value);
+        if(this.value == '2'){
+            $('#approver_level').show();
+        }
+        else{
+            $('#approver_level').hide();
+        }
+    });
+    
 
     $.get('/requests/add_item', function(res) {
         $('#details').html(res);

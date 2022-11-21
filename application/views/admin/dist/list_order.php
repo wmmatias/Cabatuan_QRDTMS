@@ -26,6 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <tr>
                                             <th>PO Number</th>
                                             <th>PR Number</th>
+                                            <th>Department</th>
                                             <th>Description</th>
                                             <th>Status</th>
                                             <th>Created by</th>
@@ -39,6 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>                                        <tr>
                                             <td><?=$data['order_no']?></td>
                                             <td><?=$data['pr_no']?></td>
+                                            <td><?=$data['department']?></td>
                                             <td><?=$data['description']?></td>
                                             <td>
 <?php                                           if($data['approver_1'] === '0'){

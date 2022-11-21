@@ -117,8 +117,11 @@ class Requests extends CI_Controller {
         }
         else
         {   
+            $id = $this->session->userdata('user_id');
             $this->session->set_flashdata('warning', '<strong>Successfully</strong> Created');
             $this->request->update_pr($form_data);
+            $this->email->create_pr($form_data, $id);
+            $this->email->to_mbo($form_data);
             $this->session->set_userdata('activity', 'PR '.$pr_no.' created successfully');
             $this->activity->log($this->session->userdata('user_id'));
             redirect('dashboards/list_request');

@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Dashboards extends CI_Controller {
     public function index() 
     {   
@@ -122,6 +121,17 @@ class Dashboards extends CI_Controller {
         $this->load->view('templates/includes/footer');
     }
 
+    public function approval_request() 
+    {   
+        $approver = $this->session->userdata('approver');
+        $result = $this->request->fetch_all_request_approval($approver);
+        $list = array('list' => $result);
+        $this->load->view('templates/includes/header');
+        $this->load->view('templates/includes/sidebar');
+        $this->load->view('admin/dist/approval_request',$list);
+        $this->load->view('templates/includes/footer');
+    }
+    
     public function approval_order() 
     {   
         $approver = $this->session->userdata('approver');
@@ -136,21 +146,26 @@ class Dashboards extends CI_Controller {
     
     public function report() 
     {   
-        $this->load->view('templates/includes/header');
-        $this->load->view('templates/includes/sidebar');
-        $this->load->view('admin/dist/view_report');
-        $this->load->view('templates/includes/footer');
-    }
+        $dtable = $this->report->daily_table();
+        $po_dtable = $this->report->po_daily_table();
+        $wtable = $this->report->weekly_table();
+        $po_wtable = $this->report->po_weekly_table();
+        $mtable = $this->report->monthly_table();
+        $po_mtable = $this->report->po_monthly_table();
+        $data = array('dtable'=>$dtable, 'po_dtable'=>$po_dtable, 'wtable'=>$wtable, 'po_wtable'=>$po_wtable, 'mtable'=>$mtable, 'po_mtable'=>$po_mtable);
 
-    public function approval_request() 
-    {
-        $approver = $this->session->userdata('approver');
-        $result = $this->request->fetch_all_request_approval($approver);
-        $list = array('list' => $result);
+        $dchart = $this->report->daily_chart();
+        $ychart = $this->report->ydaily_chart();
+        $wchart = $this->report->weekly_chart();
+        $wmax = $this->report->weekly_max();
+        $mchart = $this->report->monthly_chart();
+        $mmax = $this->report->monthly_max();
+        $chart = array('wchart'=>$wchart, 'wmax'=>$wmax, 'dchart'=>$dchart, 'ychart'=>$ychart, 'mchart'=>$mchart, 'mmax'=>$mmax);
+
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
-        $this->load->view('admin/dist/approval_request',$list);
-        $this->load->view('templates/includes/footer');
+        $this->load->view('admin/dist/view_report',$data);
+        $this->load->view('templates/includes/footer',$chart);
     }
 
     public function logoff() 

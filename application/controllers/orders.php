@@ -69,9 +69,14 @@ class Orders extends CI_Controller {
     }
 
     public function create_po(){
+        $id = $this->session->userdata('user_id');
         $form_data = $this->input->post();
         $this->session->set_flashdata('success', '<strong>Successfully!</strong> Created');
+        $this->session->set_userdata('activity', 'PO has been created successfully under PR '.$form_data['pr_no'].'');
+        $this->activity->log($this->session->userdata('user_id'));
         $this->request->create_po($form_data);
+        $this->email->create_po($form_data);
+        $this->email->po_to_mm($form_data);
         redirect('/dashboard/list_order');
     }
 }

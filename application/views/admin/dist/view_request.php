@@ -123,7 +123,7 @@ $admin = $this->session->userdata('auth');
                                                         <strong>CRISANTO G. JAMES</strong>
                                                         <br> 
                                                         <small>Municipal Treasurer</small><br>
-<?php                                                   if($data[0]['approver_3'] != '0'){
+<?php                                                   if($data[0]['approver_2'] != '0'){
 ?>                                                        <span class="badge bg-info text-dark">Approved</span>
 <?php                                                   }
 ?>                                                   </p>

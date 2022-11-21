@@ -42,11 +42,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="mb-2 row">
                                         <label for="userlevel" class="col-sm-2 col-form-label">User Level:</label>
                                         <div class="col-sm-4">
-                                            <select name="userlevel" class="form-select">
+                                            <select id="user_level" name="userlevel" class="form-select">
                                                 <option value="empty">Select Level</option>
                                                 <option value="0">Admin</option>
                                                 <option value="1">User</option>
                                                 <option value="2">Approver</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 row">
+                                        <label for="userlevel" class="col-sm-2 col-form-label">Approver Level:</label>
+                                        <div class="col-sm-4">
+                                            <select id="approver_level" name="approverlevel" class="form-select">
+                                                <option value="empty">Select Level</option>
+                                                <option value="0">MBO</option>
+                                                <option value="1">MT</option>
+                                                <option value="2">MA</option>
+                                                <option value="3">MM</option>
                                             </select>
                                         </div>
                                     </div>

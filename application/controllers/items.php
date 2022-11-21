@@ -68,7 +68,7 @@ class Items extends CI_Controller {
         else
         {
             $this->item->update_item($form_data);
-            $this->session->set_flashdata('success','<p class="text-danger">The vendor successfully modified</p>');
+            $this->session->set_flashdata('success','<p class="text-danger">The Item successfully modified</p>');
             $this->session->set_userdata('activity', 'Updating '.$form_data['itemname'].' details success');
             $this->activity->log($this->session->userdata('user_id'));
             $this->edit($id);

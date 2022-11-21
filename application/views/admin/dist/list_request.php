@@ -25,6 +25,7 @@ $approver = $this->session->userdata('approver');
                                     <thead>
                                         <tr>
                                             <th>PR Number</th>
+                                            <th>Department</th>
                                             <th>Description</th>
                                             <th>Status</th>
                                             <th>Created by</th>
@@ -37,6 +38,7 @@ $approver = $this->session->userdata('approver');
                                             $create = date('m-d-Y', strtotime($data['created_at']));
 ?>                                        <tr>
                                             <td><?=$data['pr_no']?></td>
+                                            <td><?=$data['department']?></td>
                                             <td><?=$data['description']?></td>
                                             <td>
                                                 <?=($data['status'] === '0'? 'Pending' : ($data['status'] === '2'? 'Disapprove': ''))?>

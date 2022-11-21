@@ -24,7 +24,7 @@ class Request extends CI_Model {
 	}
 
     public function fetch_all_generated_request(){
-        return $this->db->query("SELECT requests.pr_no, requests.description, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
+        return $this->db->query("SELECT requests.pr_no, requests.department, requests.description, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
         FROM cabatuan_qrdtms.requests
         LEFT JOIN cabatuan_qrdtms.users
         ON users.id = requests.created_by
@@ -42,7 +42,7 @@ class Request extends CI_Model {
             FROM cabatuan_qrdtms.requests
             LEFT JOIN cabatuan_qrdtms.users
             ON users.id = requests.created_by
-            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ?
+            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ? AND requests.description IS NOT NULL AND requests.department IS NOT NULL
             ORDER BY requests.pr_no DESC",
             array(
                 $this->security->xss_clean($mbo),
@@ -60,7 +60,7 @@ class Request extends CI_Model {
             FROM cabatuan_qrdtms.requests
             LEFT JOIN cabatuan_qrdtms.users
             ON users.id = requests.created_by
-            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ?
+            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ? AND requests.description IS NOT NULL AND requests.department IS NOT NULL
             ORDER BY requests.pr_no DESC",
             array(
                 $this->security->xss_clean($mbo),
@@ -78,7 +78,7 @@ class Request extends CI_Model {
             FROM cabatuan_qrdtms.requests
             LEFT JOIN cabatuan_qrdtms.users
             ON users.id = requests.created_by
-            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ?
+            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ? AND requests.description IS NOT NULL AND requests.department IS NOT NULL
             ORDER BY requests.pr_no DESC",
             array(
                 $this->security->xss_clean($mbo),
@@ -96,7 +96,7 @@ class Request extends CI_Model {
             FROM cabatuan_qrdtms.requests
             LEFT JOIN cabatuan_qrdtms.users
             ON users.id = requests.created_by
-            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ?
+            WHERE requests.approver_1 = ? AND requests.approver_2 = ? AND requests.approver_3 = ? AND requests.approver_4 = ? AND requests.description IS NOT NULL AND requests.department IS NOT NULL
             ORDER BY requests.pr_no DESC",
             array(
                 $this->security->xss_clean($mbo),
@@ -130,7 +130,7 @@ class Request extends CI_Model {
     }
     
     public function fetch_all_generated_order(){
-        return $this->db->query("SELECT orders.order_no, requests.pr_no, requests.description, orders.approver_1, users.first_name, users.last_name, requests.created_at
+        return $this->db->query("SELECT orders.order_no, requests.pr_no, requests.department, requests.description, orders.approver_1, users.first_name, users.last_name, requests.created_at
         FROM cabatuan_qrdtms.orders
         LEFT JOIN cabatuan_qrdtms.requests
         ON orders.pr_no = requests.pr_no
@@ -565,6 +565,8 @@ class Request extends CI_Model {
         $admin = $this->session->userdata('auth');
         if($level === '1'){
             $stat = '1';
+            $this->email->to_mt($id);
+            $this->email->mbo_to_creator($id);
             $this->db->query("UPDATE requests SET approver_1 = ?, created_at = ?, updated_at = ? WHERE pr_no = ?",
             array(
                 $this->security->xss_clean($stat),
@@ -575,6 +577,8 @@ class Request extends CI_Model {
         }
         elseif($level === '2'){
             $stat = '1';
+            $this->email->to_ma($id);
+            $this->email->mt_to_creator($id);
             $this->db->query("UPDATE requests SET approver_2 = ?, created_at = ?, updated_at = ? WHERE pr_no = ?",
             array(
                 $this->security->xss_clean($stat),
@@ -585,6 +589,8 @@ class Request extends CI_Model {
         }
         elseif($level === '3'){
             $stat = '1';
+            $this->email->to_mm($id);
+            $this->email->ma_to_creator($id);
             $this->db->query("UPDATE requests SET approver_3 = ?, created_at = ?, updated_at = ? WHERE pr_no = ?",
             array(
                 $this->security->xss_clean($stat),
@@ -596,6 +602,8 @@ class Request extends CI_Model {
         elseif($level === '4'){
             $stat = '1';
             $status = '1';
+            $this->email->mm($id);
+            $this->email->mm_to_creator($id);
             $this->db->query("UPDATE requests SET approver_4 = ?, status = ?, created_at = ?, updated_at = ? WHERE pr_no = ?",
             array(
                 $this->security->xss_clean($stat),
@@ -608,6 +616,7 @@ class Request extends CI_Model {
         elseif($admin){
             $stat = '1';
             $status = '1';
+            $this->email->admin_to_creator($id);
             $this->db->query("UPDATE requests SET approver_1 = ?, approver_2 = ?, approver_3 = ?, approver_4 = ?, status = ?, created_at = ?, updated_at = ? WHERE pr_no = ?",
             array(
                 $this->security->xss_clean($stat),
@@ -625,6 +634,7 @@ class Request extends CI_Model {
 
     public function update_approve_po($id){
         $stat = '1';
+        $this->email->approved($id);
         $this->db->query("UPDATE orders SET approver_1 = ?, created_at = ?, updated_at = ? WHERE order_no = ?",
         array(
             $this->security->xss_clean($stat),

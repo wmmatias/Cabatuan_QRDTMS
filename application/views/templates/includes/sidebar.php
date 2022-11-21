@@ -25,6 +25,10 @@ $user = $this->session->userdata('user');
                                 <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
                                 Activity Logs
                             </a>
+                            <a class="nav-link <?=($approver ? 'd-none' : '')?>" href="/reports/export_backup">
+                                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                                Export Backup
+                            </a>
                             <div class="sb-sidenav-menu-heading">Transaction</div>
 <?php                       if(!$approver){
 ?>                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#create" aria-expanded="false" aria-controls="create">
