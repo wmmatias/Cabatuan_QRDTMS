@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $date = date('m-d-Y', strtotime($date));
+$dept = $this->session->userdata('department');
 ?>            
             <div id="layoutSidenav_content">
                 <main>
@@ -36,8 +37,13 @@ $date = date('m-d-Y', strtotime($date));
                                             </div>
                                             <div class="mb-2 row">
                                                 <label for="department" class="col-sm-2 col-form-label">Department:</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" name="department" class="form-control">
+                                                <div class="col-sm-4">
+                                                <select id="department" name="department" class="form-select">
+                                                <option value="empty">Select Department</option>
+<?php                                           foreach($department as $data){
+?>                                              <option value="<?=$data['id']?>" <?=($dept === $data['id'] ? 'selected' : '')?>><?=$data['name']?></option>
+<?php                                           }
+?>                                            </select>
                                                     <?php echo form_error('department') ?>
                                                 </div>
                                             </div>

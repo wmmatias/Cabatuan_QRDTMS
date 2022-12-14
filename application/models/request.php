@@ -24,10 +24,12 @@ class Request extends CI_Model {
 	}
 
     public function fetch_all_generated_request(){
-        return $this->db->query("SELECT requests.pr_no, requests.department, requests.description, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
+        return $this->db->query("SELECT requests.pr_no, departments.name as department, requests.description, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
         FROM cabatuan_qrdtms.requests
         LEFT JOIN cabatuan_qrdtms.users
         ON users.id = requests.created_by
+        LEFT JOIN cabatuan_qrdtms.departments
+        ON departments.id = requests.department
         WHERE requests.description IS NOT NULL AND requests.department IS NOT NULL
         ORDER BY requests.pr_no DESC")->result_array();
     }
@@ -130,10 +132,12 @@ class Request extends CI_Model {
     }
     
     public function fetch_all_generated_order(){
-        return $this->db->query("SELECT orders.order_no, requests.pr_no, requests.department, requests.description, orders.approver_1, users.first_name, users.last_name, requests.created_at
+        return $this->db->query("SELECT orders.order_no, requests.pr_no, departments.name as department, requests.description, orders.approver_1, users.first_name, users.last_name, requests.created_at
         FROM cabatuan_qrdtms.orders
         LEFT JOIN cabatuan_qrdtms.requests
         ON orders.pr_no = requests.pr_no
+        LEFT JOIN cabatuan_qrdtms.departments
+        ON departments.id = requests.department
         LEFT JOIN cabatuan_qrdtms.users
         ON requests.created_by = users.id
         ORDER BY orders.created_at DESC")->result_array();

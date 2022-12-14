@@ -13,7 +13,7 @@ $user = $this->session->userdata('user');
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <a class="nav-link <?=($approver ? 'd-none' : '')?>" href="/dashboard/users">
+                            <a class="nav-link <?=($approver ? 'd-none' :'')?>" href="/dashboard/users">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                 Users
                             </a>

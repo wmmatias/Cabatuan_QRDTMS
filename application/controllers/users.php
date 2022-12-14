@@ -18,9 +18,10 @@ class Users extends CI_Controller {
     
     public function edit($id) 
     {   
+        $department = $this->dashboard->get_department();
         $this->session->set_userdata(array('edit_id'=> $id));
         $result = $this->user->get_user_id($id);
-        $list = array('list' => $result);  
+        $list = array('list' => $result, 'department'=>$department);  
 
         $this->load->view('templates/includes/header');
         $this->load->view('templates/includes/sidebar');
@@ -46,19 +47,19 @@ class Users extends CI_Controller {
                 $is_admin = $this->user->validate_is_admin($user_name);
                 $approver = $this->user->validate_is_approver($user_name);
                 if(!empty($is_admin)){
-                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'auth' => true));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'department'=>$user['department'], 'auth' => true));
                     $this->session->set_userdata('activity', ''.$user['first_name'].' successfully logged in');
                     $this->activity->log($user['id']);
                     redirect("dashboard");
                 }
                 elseif(!empty($approver)){
-                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'approver'=>$user['app_level']));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'department'=>$user['department'], 'approver'=>$user['app_level']));
                     $this->session->set_userdata('activity', ''.$user['first_name'].' successfully logged in');
                     $this->activity->log($user['id']);
                     redirect("dashboard");
                 }
                 else{
-                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'user'=>'user'));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'firstname'=>$user['first_name'], 'department'=>$user['department'], 'user'=>'user'));
                     $this->session->set_userdata('activity', ''.$user['first_name'].' successfully logged in');
                     $this->activity->log($user['id']);
                     redirect("dashboard");
@@ -88,6 +89,12 @@ class Users extends CI_Controller {
         }
         elseif($this->input->post('userlevel') === 'empty'){
             $this->session->set_flashdata('userlevel', '<p class="text-danger">please select user level</p>');
+            $this->session->set_userdata('activity', 'Adding '.$form_data['firstname'].' '.$form_data['lastname'].' to user failed');
+            $this->activity->log($this->session->userdata('user_id'));
+            redirect("/dashboard/add");
+        }
+        elseif($this->input->post('department') === 'empty'){
+            $this->session->set_flashdata('department', '<p class="text-danger">please select department</p>');
             $this->session->set_userdata('activity', 'Adding '.$form_data['firstname'].' '.$form_data['lastname'].' to user failed');
             $this->activity->log($this->session->userdata('user_id'));
             redirect("/dashboard/add");

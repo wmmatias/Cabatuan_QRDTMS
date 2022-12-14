@@ -45,6 +45,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                     </div>
                                     <div class="mb-2 row">
+                                        <label for="department" class="col-sm-2 col-form-label">Department:</label>
+                                        <div class="col-sm-4">
+                                            <select name="department" class="form-select">
+                                                <option>Select Level</option>
+<?php                                           foreach($department as $data){
+?>                                              <option value="<?=$data['id']?>" <?=($list['department'] === $data['id'] ? 'selected' : '')?>><?=$data['name']?></option>
+<?php                                           }
+?>                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 row">
                                         <label for="userlevel" class="col-sm-2 col-form-label">User Level:</label>
                                         <div class="col-sm-4">
                                             <select name="userlevel" class="form-select">

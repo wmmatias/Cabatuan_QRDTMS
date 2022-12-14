@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="card-body">
                                 <?=$this->session->flashdata('input_errors');?> 
                                 <?=$this->session->flashdata('userlevel');?> 
+                                <?=$this->session->flashdata('department');?> 
                                 <form action="/dashboard/create" method="POST">
                                     <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                                     <div class="mb-2 row">
@@ -37,6 +38,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <label for="username" class="col-sm-2 col-form-label">Email:</label>
                                         <div class="col-sm-4">
                                             <input type="email" name="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 row">
+                                        <label for="department" class="col-sm-2 col-form-label">Department:</label>
+                                        <div class="col-sm-4">
+                                            <select id="department" name="department" class="form-select">
+                                                <option value="empty">Select Department</option>
+<?php                                           foreach($department as $data){
+?>                                              <option value="<?=$data['id']?>"><?=$data['name']?></option>
+<?php                                           }
+?>                                            </select>
                                         </div>
                                     </div>
                                     <div class="mb-2 row">

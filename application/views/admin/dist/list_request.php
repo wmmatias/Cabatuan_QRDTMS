@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $approver = $this->session->userdata('approver');
+$user = $this->session->userdata('user');
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -27,7 +28,7 @@ $approver = $this->session->userdata('approver');
                                             <th>PR Number</th>
                                             <th>Department</th>
                                             <th>Description</th>
-                                            <th>Status</th>
+                                            <th class="<?=($user ? 'd-none': '')?>">Status</th>
                                             <th>Created by</th>
                                             <th>Created at</th>
                                             <th>Action</th>
@@ -40,7 +41,7 @@ $approver = $this->session->userdata('approver');
                                             <td><?=$data['pr_no']?></td>
                                             <td><?=$data['department']?></td>
                                             <td><?=$data['description']?></td>
-                                            <td>
+                                            <td class="<?=($user ? 'd-none': '')?>">
                                                 <?=($data['status'] === '0'? 'Pending' : ($data['status'] === '2'? 'Disapprove': ''))?>
 <?php                                           if($data['approver_1'] === '0'){
 ?>                                                  <span class="badge bg-info text-dark">MBO</span>

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-// var_dump($_SESSION)
+$user = $this->session->userdata('user');
 ?>            <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <th>PR Number</th>
                                             <th>Department</th>
                                             <th>Description</th>
-                                            <th>Status</th>
+                                            <th class="<?=($user ? 'd-none': '')?>">Status</th>
                                             <th>Created by</th>
                                             <th>Created at</th>
                                             <th>Action</th>
@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$data['pr_no']?></td>
                                             <td><?=$data['department']?></td>
                                             <td><?=$data['description']?></td>
-                                            <td>
+                                            <td class="<?=($user ? 'd-none': '')?>">
 <?php                                           if($data['approver_1'] === '0'){
 ?>                                                  Pending <span class="badge bg-info text-dark">MM</span>
 <?php                                           }

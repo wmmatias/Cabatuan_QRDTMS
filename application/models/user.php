@@ -51,13 +51,14 @@ class User extends CI_Model {
         $approver = ($user['userlevel'] != '2' && $user['approverlevel'] === 'empty' ? '0' : ($user['userlevel'] != '2' && $user['approverlevel'] != 'empty'? '0' : $user['approverlevel']));
         $year = date('Y');
         $password = 'Cabatuan@'.$year.'';
-        $query = "INSERT INTO Users (first_name, last_name, user_name, email, password, user_level, app_level, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO Users (first_name, last_name, user_name, email, password, department, user_level, app_level, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)";
         $values = array(
             $this->security->xss_clean($user['firstname']), 
             $this->security->xss_clean($user['lastname']), 
             $this->security->xss_clean($user['username']), 
             $this->security->xss_clean($user['email']), 
             md5($this->security->xss_clean($password)),
+            $this->security->xss_clean($user['department']),
             $this->security->xss_clean($user['userlevel']),
             $this->security->xss_clean($approver), 
             $this->security->xss_clean(date("Y-m-d, H:i:s")),
@@ -138,7 +139,7 @@ class User extends CI_Model {
 
     public function get_user_id($id)
     {
-        $query = "SELECT id, first_name, last_name, user_name, email, user_level FROM users WHERE id=?";
+        $query = "SELECT id, first_name, last_name, user_name, email, department, user_level FROM users WHERE id=?";
         return $this->db->query($query, $this->security->xss_clean($id))->result_array()[0];
     }
 
@@ -159,12 +160,13 @@ class User extends CI_Model {
 
     public function update_userinformation($form_data) 
     {
-        return $this->db->query("UPDATE users SET first_name = ?, last_name = ?, user_name = ?, email = ?, user_level = ?,updated_at = ? WHERE id = ?", 
+        return $this->db->query("UPDATE users SET first_name = ?, last_name = ?, user_name = ?, email = ?, department = ?, user_level = ?,updated_at = ? WHERE id = ?", 
         array(
             $this->security->xss_clean($form_data['firstname']), 
             $this->security->xss_clean($form_data['lastname']),
             $this->security->xss_clean($form_data['username']),
             $this->security->xss_clean($form_data['email']), 
+            $this->security->xss_clean($form_data['department']), 
             $this->security->xss_clean($form_data['userlevel']), 
             $this->security->xss_clean(date("Y-m-d, H:i:s")),
             $this->security->xss_clean($form_data['id'])));

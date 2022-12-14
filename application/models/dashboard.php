@@ -25,6 +25,9 @@ class Dashboard extends CI_Model {
         WHERE status = ?", array($this->security->xss_clean($status)))->result_array()[0];
     }
 
+    public function get_department(){
+        return $this->db->query ("SELECT * FROM cabatuan_qrdtms.departments")->result_array();
+    }
     public function po_total(){ 
         return $this->db->query ("SELECT count(*) as total_request FROM cabatuan_qrdtms.orders")->result_array()[0];
     }
