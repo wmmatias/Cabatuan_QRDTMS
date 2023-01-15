@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $year = date('Y');
 $past = $year - '1';
 ?>            </main>
-<?php var_dump($ynow15)?>
+<!-- <?php var_dump($ynow15)?> -->
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">

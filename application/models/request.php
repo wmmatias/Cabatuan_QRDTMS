@@ -477,12 +477,14 @@ class Request extends CI_Model {
     }
 
     public function get_pr($pr_no){
-        return $this->db->query("SELECT requests.pr_no, requests.department, requests.description, items.description as item_name, items.uom, items.qty, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
+        return $this->db->query("SELECT requests.pr_no, departments.name, requests.description, items.description as item_name, items.uom, items.qty, requests.status, requests.approver_1, requests.approver_2, requests.approver_3, requests.approver_4, users.first_name, users.last_name, requests.created_at
         FROM cabatuan_qrdtms.requests
         LEFT JOIN cabatuan_qrdtms.users
         ON users.id = requests.created_by
         LEFT JOIN cabatuan_qrdtms.items
         ON items.pr_no = requests.pr_no
+		LEFT JOIN cabatuan_qrdtms.departments
+        ON departments.id = requests.department
         WHERE requests.pr_no = ?",
         array(
             $this->security->xss_clean($pr_no)

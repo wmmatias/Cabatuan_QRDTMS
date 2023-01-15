@@ -73,7 +73,7 @@ $admin = $this->session->userdata('auth');
                                                 <label for="pr_no" class="col-form-label"> <strong>PR No.: </strong><?=$data[0]['pr_no']?></label>
                                             </div>
                                             <div class="col d-inline-block align-top">
-                                                <label for="date" class="col-form-label float-end"> <strong>Date: </strong><?=$create?></label>
+                                                <label for="date" class="col-form-label float-end"> <?=$create?> <strong>&nbsp; Date</strong></label>
                                             </div>
                                         </div>
                                         <div class="mb-1 row">
@@ -81,7 +81,7 @@ $admin = $this->session->userdata('auth');
                                                 <label for="department" class="col-form-label"> <strong>Description: </strong><?=$data[0]['description']?></label>
                                             </div>
                                             <div class="col">
-                                                <label for="department" class="col-form-label float-end"> <strong>Department: </strong><?=$data[0]['department']?></label>
+                                                <label for="department" class="col-form-label float-end"> <?=$data[0]['name']?> <strong> &nbsp; Department</strong></label>
                                             </div>
                                         </div>
                                         <?=$this->session->flashdata('input_errors');?> 
@@ -114,7 +114,7 @@ $admin = $this->session->userdata('auth');
                                                     <p>
                                                         Requested By: <br>
                                                         <strong><?=strtoupper($data[0]['first_name'].' '.$data[0]['last_name'])?></strong><br>
-                                                        <small><?=$data[0]['department']?></small>
+                                                        <small><?=$data[0]['name']?></small>
                                                     </p>
                                                 </div>
                                                 <div class="col">

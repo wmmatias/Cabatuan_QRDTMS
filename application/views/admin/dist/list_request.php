@@ -22,7 +22,7 @@ $user = $this->session->userdata('user');
                                 <a href="/dashboard/pr_details" class="float-end btn btn-primary"><i class="fas fa-plus"></i> Add PR</a>
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table id="datatablesSimple" class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>PR Number</th>
